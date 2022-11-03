@@ -1,0 +1,29 @@
+{
+  "name": "notesapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giuliobracci/NotesApp-HRM-Group.git"
+  },
+  "author": "Giulio Bracci",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/giuliobracci/NotesApp-HRM-Group/issues"
+  },
+  "homepage": "https://github.com/giuliobracci/NotesApp-HRM-Group#readme",
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
