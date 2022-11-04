@@ -2,7 +2,6 @@ const express = require('express')
 const moongose = require('mongoose')
 const Note = require('./models/note')
 const User = require('./models/user')
-const ejs = require('ejs')
 const Key = '4352538'
 const CryptoJS = require('crypto-js')
 const user = require('./models/user')
@@ -26,7 +25,6 @@ app.use(
     })
 )
 app.use(cookieParser())
-app.set('view-engine', 'ejs')
 app.listen(port, () => {
     console.log(`Example app listening on port http://localhost:${port}`)
 })
