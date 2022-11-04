@@ -2,9 +2,9 @@ const { default: mongoose } = require("mongoose");
 
 const noteSchema = new mongoose.Schema(
   {
-    id: { type: Number, require: true },
     title: { type: String, require: true },
-    description: { type: String },
+    copy: { type: String },
+    email: { type: String, require: true },
   },
   { timestamps: true }
 );
