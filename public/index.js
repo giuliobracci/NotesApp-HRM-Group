@@ -96,9 +96,16 @@ function switchForm(event) {
 // - The user gets an istant visual feedback from typing by switching classes on the fly
 
 function checkIfPasswordAreTheSame() {
+    if (confirmationPassword.value == '') {
+        passwordError.classList.add('hidden')
+        return
+    }
+
     password.value !== confirmationPassword.value
         ? (submit.classList.add('disabled'),
-          passwordError.classList.remove('hidden'))
+          passwordError.classList.remove('hidden'),
+          passwordError.classList.remove('text-success'),
+          passwordError.classList.add('text-danger'))
         : (submit.classList.remove('disabled'),
           (submit.disabled = false),
           (passwordError.innerText = 'Password Match!'),
@@ -129,12 +136,15 @@ function passwordValidator() {
     regex.lowercase.test(password.value) == true
         ? changePasswordRequirementsColor(lowercase, true)
         : changePasswordRequirementsColor(lowercase, false)
+
     regex.uppercase.test(password.value) == true
         ? changePasswordRequirementsColor(uppercase, true)
         : changePasswordRequirementsColor(uppercase, false)
+
     regex.numbers.test(password.value) == true
         ? changePasswordRequirementsColor(number, true)
         : changePasswordRequirementsColor(number, false)
+
     regex.specialchar.test(password.value) == true
         ? changePasswordRequirementsColor(specialChar, true)
         : changePasswordRequirementsColor(specialChar, false)
