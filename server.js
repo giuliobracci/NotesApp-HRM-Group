@@ -4,7 +4,6 @@ const Note = require('./models/note')
 const User = require('./models/user')
 const Key = '4352538'
 const CryptoJS = require('crypto-js')
-const user = require('./models/user')
 const oneDay = 1000 * 60 * 60 * 24
 const sessions = require('express-session')
 const cookieParser = require('cookie-parser')
@@ -58,16 +57,23 @@ app.get('/displaynotes', (req, res) => {
 
 // Registration route
 
-app.post('/register', (req, res) => {
-    const newUser = {
-        email: req.body.email,
-        password: encrypt(req.body.password),
+app.post('/register', async (req, res) => {
+    let email = req.body.email
+    let password = encrypt(req.body.password)
+    try {
+        const responseDb = await User.create({ email, password })
+    } catch (error) {
+        if (error.code === 11000) {
+            return res.json({
+                status: 'error',
+                message: 'You are already registered, use login instead',
+            })
+        }
+        return res.json({ status: 'error', message: error })
     }
-    User.create(newUser).then(() => {
-        console.log('here')
-        session = req.session
-        session.email = req.body.email
-        res.redirect('/add')
+    return res.json({
+        status: 'ok',
+        message: 'You are registered succesfully!',
     })
 })
 
