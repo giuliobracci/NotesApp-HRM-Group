@@ -10,15 +10,132 @@
             integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
             crossorigin="anonymous"
         />
+        <link href="./styles/style.css" rel="stylesheet" />
     </head>
-
-    <body>
-        <div class="container">
-            <div class="col pt-5 px-5">
-                <ul class="list-group" id="taskList"></ul>
-                <a href="/add.html"
-                    ><button class="btn btn-primary mt-3">Add Note</button></a
+    <body class="bg-light">
+        <div class="px-3 py-2 border-bottom mb-3">
+            <div class="d-flex justify-content-between mx-5">
+                <h1>Notes.</h1>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    style="height: min-content; align-self: center"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modal-add-note"
                 >
+                    Add
+                    <svg
+                        enable-background="new 0 0 512 512"
+                        height="20px"
+                        fill="white"
+                        id="Layer_1"
+                        version="1.1"
+                        viewBox="0 0 512 512"
+                        width="20px"
+                        xml:space="preserve"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                        <path
+                            d="M256,512C114.625,512,0,397.391,0,256C0,114.609,114.625,0,256,0c141.391,0,256,114.609,256,256  C512,397.391,397.391,512,256,512z M256,64C149.969,64,64,149.969,64,256s85.969,192,192,192c106.047,0,192-85.969,192-192  S362.047,64,256,64z M288,384h-64v-96h-96v-64h96v-96h64v96h96v64h-96V384z"
+                        />
+                    </svg>
+                </button>
+                <?xml version="1.0" ?><!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+            </div>
+        </div>
+        <div class="container p-0">
+            <div class="row" id="card-injection">
+                <div
+                    class="col-sm-6 col-lg-4 mb-4 hidden"
+                    id="noteCardTemplate"
+                >
+                    <div class="card">
+                        <div class="card-header px-4 pt-4">
+                            <h5 class="card-title mb-0" id="card-title">
+                                Landing page redesign
+                            </h5>
+                        </div>
+                        <div class="card-body px-4 pt-2">
+                            <p id="card-copy">
+                                Etiam rhoncus. Maecenas tempus, tellus eget
+                                condimentum rhoncus, sem quam semper libero, sit
+                                amet adipiscing sem neque sed ipsum.
+                            </p>
+                        </div>
+                        <div class="card-footer bg-primary"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="modal fade"
+            id="modal-add-note"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="staticBackdropLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                            Create a new note
+                        </h1>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form-note">
+                            <label
+                                for="exampleFormControlInput1"
+                                class="form-label"
+                                >Title</label
+                            >
+                            <input
+                                type="text"
+                                name="title"
+                                class="form-control"
+                                id="title"
+                                placeholder="Add a title here"
+                            />
+
+                            <label
+                                for="exampleFormControlTextarea1"
+                                class="form-label"
+                                >Add your note here</label
+                            >
+                            <textarea
+                                class="form-control"
+                                id="copy"
+                                name="copy"
+                                rows="3"
+                            ></textarea>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="add-note-button"
+                            data-bs-dismiss="modal"
+                        >
+                            Add note
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <script
@@ -26,6 +143,6 @@
             integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
             crossorigin="anonymous"
         ></script>
-        <script async src="displaynotes.js"></script>
+        <script async src="./scripts/displaynotes.js"></script>
     </body>
 </html>

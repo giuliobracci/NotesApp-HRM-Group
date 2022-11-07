@@ -10,15 +10,18 @@
             integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
             crossorigin="anonymous"
         />
+        <script defer type="module" src="./scripts/add.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="col pt-5 px-5">
                 <form
+                    id="form-note"
                     action="/addnotes"
                     method="POST"
                     class="row-1 w-75"
                     style="display: block; margin: 0 auto"
+                    onsubmit="return false"
                 >
                     <h1>Add your first note</h1>
                     <div class="mb-3">
