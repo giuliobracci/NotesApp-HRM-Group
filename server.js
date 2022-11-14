@@ -7,7 +7,8 @@ const CryptoJS = require('crypto-js')
 const oneDay = 1000 * 60 * 60 * 24
 const sessions = require('express-session')
 const cookieParser = require('cookie-parser')
-const { response } = require('express')
+const note = require('./models/note')
+// const { response } = require('express')
 var session = null
 const app = express()
 const port = 3000
@@ -15,6 +16,7 @@ const port = 3000
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(__dirname + '/public'))
+app.use(cookieParser())
 app.use(
     sessions({
         secret: 'thisismysecrctekeyfhrgfgrfrty84fwir767',
@@ -23,7 +25,7 @@ app.use(
         resave: false,
     })
 )
-app.use(cookieParser())
+
 app.listen(port, () => {
     console.log(`Example app listening on port http://localhost:${port}`)
 })
@@ -137,6 +139,19 @@ app.post('/login', async (req, res) => {
     })
 })
 
+// Logout
+app.get('/logout', function (req, res) {
+    // remove the req.user property and clear the login session
+    req.logout()
+
+    // destroy session data
+    req.session = null
+    session = null
+
+    // redirect to homepage
+    res.redirect('/')
+})
+
 // Get JSON of all the notes the user has
 app.get('/getnotes', async (req, res) => {
     // Db query to find all the notes the user has based on his mail
@@ -155,6 +170,7 @@ app.post('/addnotes', async (req, res) => {
     let title = req.body.title
     let copy = req.body.copy
     let email = session.email
+    let resultDb = ''
 
     // Check for empty title and description
     let checkNoTitleAndCopy =
@@ -218,4 +234,24 @@ app.post('/addnotes', async (req, res) => {
 
     // No errors found return 'ok' response with the note created
     return res.json({ status: 'ok', title: title, copy: copy })
+})
+
+app.put('/notes/:id', async (req, res) => {
+    let { id } = req.params
+
+    let notefind = await Note.findByIdAndUpdate(
+        id,
+        {
+            title: req.body.title,
+            copy: req.body.copy,
+        },
+        function (err, docs) {
+            if (err) {
+                console.log(err)
+            } else {
+                return res.json({ status: 'ok', message: 'Note updated!' })
+            }
+        }
+    ).clone()
+    //console.log(notefind)
 })

@@ -16,32 +16,40 @@
         <div class="px-3 py-2 border-bottom mb-3">
             <div class="d-flex justify-content-between mx-5">
                 <h1>Notes.</h1>
-                <button
-                    type="button"
-                    class="btn btn-primary"
-                    style="height: min-content; align-self: center"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modal-add-note"
-                >
-                    Add
-                    <svg
-                        enable-background="new 0 0 512 512"
-                        height="20px"
-                        fill="white"
-                        id="Layer_1"
-                        version="1.1"
-                        viewBox="0 0 512 512"
-                        width="20px"
-                        xml:space="preserve"
-                        xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                <div>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        style="height: min-content; align-self: center"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-add-note"
                     >
-                        <path
-                            d="M256,512C114.625,512,0,397.391,0,256C0,114.609,114.625,0,256,0c141.391,0,256,114.609,256,256  C512,397.391,397.391,512,256,512z M256,64C149.969,64,64,149.969,64,256s85.969,192,192,192c106.047,0,192-85.969,192-192  S362.047,64,256,64z M288,384h-64v-96h-96v-64h96v-96h64v96h96v64h-96V384z"
-                        />
-                    </svg>
-                </button>
-                <?xml version="1.0" ?><!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+                        Add
+                        <svg
+                            enable-background="new 0 0 512 512"
+                            height="20px"
+                            fill="white"
+                            id="Layer_1"
+                            version="1.1"
+                            viewBox="0 0 512 512"
+                            width="20px"
+                            xml:space="preserve"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                        >
+                            <path
+                                d="M256,512C114.625,512,0,397.391,0,256C0,114.609,114.625,0,256,0c141.391,0,256,114.609,256,256  C512,397.391,397.391,512,256,512z M256,64C149.969,64,64,149.969,64,256s85.969,192,192,192c106.047,0,192-85.969,192-192  S362.047,64,256,64z M288,384h-64v-96h-96v-64h96v-96h64v96h96v64h-96V384z"
+                            />
+                        </svg>
+                    </button>
+                    <a
+                        type="button"
+                        class="btn btn-primary"
+                        style="height: min-content; align-self: center"
+                    >
+                        Log Out
+                    </a>
+                </div>
             </div>
         </div>
         <div class="container p-0">
@@ -52,12 +60,17 @@
                 >
                     <div class="card">
                         <div class="card-header px-4 pt-4">
-                            <h5 class="card-title mb-0" id="card-title">
+                            <input type="hidden" name="_id" id="dummy" />
+                            <h5
+                                class="card-title mb-0"
+                                id="card-title"
+                                contenteditable="true"
+                            >
                                 Landing page redesign
                             </h5>
                         </div>
                         <div class="card-body px-4 pt-2">
-                            <p id="card-copy">
+                            <p id="card-copy" contenteditable="true">
                                 Etiam rhoncus. Maecenas tempus, tellus eget
                                 condimentum rhoncus, sem quam semper libero, sit
                                 amet adipiscing sem neque sed ipsum.

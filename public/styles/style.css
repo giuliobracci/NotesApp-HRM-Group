@@ -75,3 +75,10 @@
     background-color: #fff;
     border-bottom: 0 solid transparent;
 }
+/*
+.alert {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+}
+*/

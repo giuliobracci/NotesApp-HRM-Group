@@ -1,7 +1,6 @@
 import { form, submit, passwordError, loginButton, state } from './index.js'
 
 const alertMessage = document.createElement('div')
-
 alertMessage.setAttribute('role', 'alert')
 alertMessage.classList.add('alert')
 

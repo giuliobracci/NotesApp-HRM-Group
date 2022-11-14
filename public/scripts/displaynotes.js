@@ -11,6 +11,7 @@
 // Getting all the elements from the DOM
 const noteNode = document.querySelector('#noteCardTemplate')
 const injectionCardParent = document.getElementById('card-injection')
+const noteID = document.getElementById('dummy')
 const noteTitle = document.getElementById('card-title')
 const noteParagraph = document.getElementById('card-copy')
 const submitNewNote = document.getElementById('add-note-button')
@@ -19,8 +20,10 @@ const titleForm = document.getElementById('title')
 const copyForm = document.getElementById('copy')
 
 // Preparing the alert messages with the role of alert and a default class of alert-danger
+let alertClassName = 'alert-danger'
+let successClassName = 'alert-success'
 alertMessage.setAttribute('role', 'alert')
-alertMessage.classList.add('alert', 'alert-danger')
+alertMessage.classList.add('alert', alertClassName)
 
 // Fetch the notes of the user from the server with a GET request
 fetch('/getnotes')
@@ -46,7 +49,7 @@ submitNewNote.addEventListener('click', () => {
         body: JSON.stringify(data),
     }
     // We call the postData function with the url and the options
-    postData(url, options)
+    sendData(url, options)
 })
 
 // Function to inject the notes into the DOM
@@ -61,15 +64,19 @@ function renderNotes(notes) {
 }
 // Insert new card content takes 1 note at the time and performs the prepend into the DOM
 function insertNewCardContent(note) {
-    // Extract the data of title and copy
+    // Extract the data of id, title and copy
     let noteData = {
+        id: note._id,
         title: note.title,
         copy: note.copy,
     }
-    // Note title and paragraph are 2 elements of the DUMMY hidden node
-    // We assign the new title and copy to them
+
+    // Note id, title and paragraph are 3 elements of the DUMMY hidden node
+    // We assign the new note id, title and copy to them
+    noteID.id = noteData.id
     noteTitle.innerText = noteData.title
     noteParagraph.innerText = noteData.copy
+
     // We clone the the dummy node and assign the copy to the newNote variable
     // TRUE tells the cloneNode function to clone also all of the children to keep the original layout
     let newNote = noteNode.cloneNode(true)
@@ -77,35 +84,72 @@ function insertNewCardContent(note) {
     newNote.classList.remove('hidden')
     // Add the class for fade in transition
     newNote.classList.add('card-created')
+    newNote.addEventListener(
+        'keyup',
+        delay(function (event) {
+            modifyNote(event)
+        }, 2500)
+    )
+
     // Prepend the card into the injection target node
     injectionCardParent.prepend(newNote)
 }
 
-// -- POST NEW NOTE AND ERROR HANDLING --
+// This debouncing function delays the triggering of the event handler until the user has finished typing
+function delay(callback, ms) {
+    var timer = 0
+    return function () {
+        var context = this,
+            args = arguments
+        clearTimeout(timer)
+        timer = setTimeout(function () {
+            callback.apply(context, args)
+        }, ms || 0)
+    }
+}
 
-// The function performs a POST request and then calls the renderResponseNewNote
-async function postData(url, options) {
+// This function extracts the new note informations after the user has finished typing
+function modifyNote(event) {
+    let id = event.path[2].children[0].firstElementChild.id
+    let url = `/notes/${id}`
+
+    let modifiedNote = {
+        id: id,
+        title: event.path[2].children[0].innerText,
+        copy: event.path[2].children[1].innerText,
+    }
+
+    const options = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(modifiedNote),
+    }
+    sendData(url, options)
+}
+
+// The function performs a request and then calls the renderResponseNewNote
+async function sendData(url, options) {
     await fetch(url, options)
         .then(response => response.json())
         .then(data => {
-            renderResponseNewNote(data)
+            renderResponseVisualFeedback(data, url)
         })
 }
+
 // This function checks the JSON of the response status
 // IF the status is 'ok' then will show a green alert message
 // AND will call the insertNewCardContent to prepend the new note into the DOM
 // ELSE if the we receive an error we'll print the error and render a
 // danger alert at the top of the screen
 
-function renderResponseNewNote(response) {
-    response.status === 'ok'
-        ? (alertMessage.classList.replace('alert-danger', 'alert-success'),
-          (alertMessage.innerText = 'Note created succesfully'),
-          document.body.prepend(alertMessage),
-          insertNewCardContent(response),
-          setTimeout(() => alertMessage.remove(), 2000))
-        : (alertMessage.classList.replace('alert-success', 'alert-danger'),
-          (alertMessage.innerHTML = response.message),
-          document.body.prepend(alertMessage),
-          setTimeout(() => alertMessage.remove(), 4000))
+function renderResponseVisualFeedback(response, url) {
+    alertMessage.innerHTML = response.message
+    response.status !== 'ok'
+        ? alertMessage.classList.replace('alert-success', 'alert-danger')
+        : alertMessage.classList.replace('alert-danger', 'alert-success')
+    url === '/addnotes' ? insertNewCardContent(response) : ''
+
+    document.body.prepend(alertMessage)
+
+    setTimeout(() => alertMessage.remove(), 4000)
 }
