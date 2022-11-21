@@ -10,9 +10,13 @@
             integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
             crossorigin="anonymous"
         />
-        <link href="./styles/style.css" rel="stylesheet" />
-        <script defer type="module" src="./scripts/index.js"></script>
-        <script defer type="module" src="./scripts/auth.js"></script>
+        <link href="../styles/style.css" rel="stylesheet" />
+        <script defer type="module" src="./scripts/dom/index.js"></script>
+        <script
+            defer
+            type="module"
+            src="./scripts/events/events.index.js"
+        ></script>
     </head>
     <body>
         <div class="container-fluid">
@@ -29,6 +33,7 @@
                             type="button"
                             class="btn btn-primary active btn-block mb-4 nav-item mx-1"
                             id="btn-login"
+                            name="login"
                         >
                             Sign in
                         </button>
@@ -36,6 +41,7 @@
                             type="button"
                             class="btn btn-primary btn-block mb-4 nav-item mx-1"
                             id="btn-register"
+                            name="register"
                         >
                             Register
                         </button>
@@ -64,9 +70,11 @@
                         <label class="form-label" for="password"
                             >Password</label
                         >
+                    </div>
+                    <div id="register-elements" class="hidden">
                         <ul
                             id="form-password-requirements"
-                            class="form-password-requirements | text-danger | hidden"
+                            class="form-password-requirements text-danger hidden"
                         >
                             <li id="lowercase">
                                 At least one lowercase character
@@ -82,45 +90,42 @@
                                 Minum 8 characters and maximum of 32
                             </li>
                         </ul>
-                    </div>
-                    <!-- Confirm Password -->
-                    <div
-                        class="form-outline mb-4 hidden"
-                        id="pwd-confirmation-container"
-                    >
-                        <input
-                            type="password"
-                            id="confirm-password"
-                            class="form-control password"
-                        />
-                        <label class="form-label" for="confirm-password"
-                            >Confirm Password</label
+                        <!-- Confirm Password -->
+                        <div
+                            class="form-outline mb-4"
+                            id="pwd-confirmation-container"
                         >
-                        <p class="hidden text-danger" id="passwordError">
-                            Passwords don't match.
-                        </p>
-                    </div>
-
-                    <!-- 2 column grid layout for inline styling -->
-                    <div class="row mb-4">
-                        <div class="col d-flex justify-content-center">
-                            <!-- Checkbox -->
-                            <div
-                                class="form-check hidden"
-                                id="showPasswordContainer"
+                            <input
+                                type="password"
+                                id="confirm-password"
+                                name="confirmationPassword"
+                                class="form-control password"
+                            />
+                            <label class="form-label" for="confirm-password"
+                                >Confirm Password</label
                             >
-                                <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    value=""
-                                    id="showPassword"
-                                />
-                                <label
-                                    class="form-check-label"
-                                    for="form2Example31"
+                            <p class="hidden text-danger" id="passwordError">
+                                Passwords don't match.
+                            </p>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col d-flex justify-content-center">
+                                <!-- Checkbox -->
+                                <div
+                                    class="form-check"
+                                    id="showPasswordContainer"
                                 >
-                                    Show Password
-                                </label>
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="showPassword"
+                                        value=""
+                                        id="showPassword"
+                                    />
+                                    <label class="form-check-label">
+                                        Show Password
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -128,7 +133,7 @@
                     <button
                         type="submit"
                         id="submit"
-                        class="btn btn-primary btn-block mb-4"
+                        class="btn btn-primary btn-block mb-4 disabled"
                     >
                         Submit
                     </button>

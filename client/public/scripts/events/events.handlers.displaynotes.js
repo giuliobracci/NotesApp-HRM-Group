@@ -1,57 +1,7 @@
-// Behaviour:
-// The page begins with a template of card hidden [noteNode] that gets used as a dummy component
-// for rendering all the note components since its complex nesting of divs
-// 1. We get the notes the user has with fetch
-// 2. We iterate through all the notes cloning the dummy component and assigning the new title and description
-// 3. We render each note to the screen
-// 4. We await for the user to submit a new note, then if response is 'ok'
-//    we render to the screen along with a success message
-// 5. If for some reason the server throws us an error, we render an error to the user
-
-// Getting all the elements from the DOM
-const noteNode = document.querySelector('#noteCardTemplate')
-const injectionCardParent = document.getElementById('card-injection')
-const noteID = document.getElementById('dummy')
-const noteTitle = document.getElementById('card-title')
-const noteParagraph = document.getElementById('card-copy')
-const submitNewNote = document.getElementById('add-note-button')
-const alertMessage = document.createElement('div')
-const titleForm = document.getElementById('title')
-const copyForm = document.getElementById('copy')
-
-// Preparing the alert messages with the role of alert and a default class of alert-danger
-let alertClassName = 'alert-danger'
-let successClassName = 'alert-success'
-alertMessage.setAttribute('role', 'alert')
-alertMessage.classList.add('alert', alertClassName)
-
-// Fetch the notes of the user from the server with a GET request
-fetch('/getnotes')
-    .then(response => response.json())
-    .then(data => renderNotes(data))
-
-// Listening for a new note submission
-submitNewNote.addEventListener('click', () => {
-    // We do a snapshot of the current value of title and description of the form
-    let title = titleForm.value
-    let copy = copyForm.value
-    let url = '/addnotes'
-
-    // Object with the data to POST
-    data = { title: title, copy: copy }
-    // Options for the POST request
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        redirect: 'follow',
-        body: JSON.stringify(data),
-    }
-    // We call the postData function with the url and the options
-    sendData(url, options)
-})
-
+/* prettier-ignore */
+import { injectionCardParent, noteNode, noteID, noteTitle, noteParagraph, alertMessage } from '../dom/displaynotes.js'
+import { getRequestOptions, sendRequest } from '../helpers/helpers.requests.js'
+import { renderResponseMessage } from '../helpers/helpers.ui.js'
 // Function to inject the notes into the DOM
 function renderNotes(notes) {
     // If the user has more than one note we iterate through the array
@@ -60,11 +10,13 @@ function renderNotes(notes) {
               insertNewCardContent(element)
           })
         : // Else we pick just the first element
-          insertNewCardContent(notes[0])
+          insertNewCardContent(notes)
 }
+
 // Insert new card content takes 1 note at the time and performs the prepend into the DOM
 function insertNewCardContent(note) {
     // Extract the data of id, title and copy
+
     let noteData = {
         id: note._id,
         title: note.title,
@@ -88,11 +40,15 @@ function insertNewCardContent(note) {
         'keyup',
         delay(function (event) {
             modifyNote(event)
-        }, 2500)
+        }, 3000)
     )
 
     // Prepend the card into the injection target node
     injectionCardParent.prepend(newNote)
+    var msnry = new Masonry('.row', {
+        itemSelector: '.col',
+        percentPosition: true,
+    })
 }
 
 // This debouncing function delays the triggering of the event handler until the user has finished typing
@@ -109,7 +65,7 @@ function delay(callback, ms) {
 }
 
 // This function extracts the new note informations after the user has finished typing
-function modifyNote(event) {
+async function modifyNote(event) {
     let id = event.path[2].children[0].firstElementChild.id
     let url = `/notes/${id}`
 
@@ -119,21 +75,10 @@ function modifyNote(event) {
         copy: event.path[2].children[1].innerText,
     }
 
-    const options = {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(modifiedNote),
-    }
-    sendData(url, options)
-}
+    let options = getRequestOptions('PUT', modifiedNote)
+    let response = await sendRequest(url, options)
 
-// The function performs a request and then calls the renderResponseNewNote
-async function sendData(url, options) {
-    await fetch(url, options)
-        .then(response => response.json())
-        .then(data => {
-            renderResponseVisualFeedback(data, url)
-        })
+    renderResponseMessage(alertMessage, response.message, response.status)
 }
 
 // This function checks the JSON of the response status
@@ -153,3 +98,5 @@ function renderResponseVisualFeedback(response, url) {
 
     setTimeout(() => alertMessage.remove(), 4000)
 }
+
+export { renderNotes }

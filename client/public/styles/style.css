@@ -48,10 +48,11 @@
         transform: 100%;
     }
 }
-
+/*
 #noteCardTemplate {
     position: 'relative' !important;
 }
+*/
 .card:hover {
     transition: transform 0.2s ease-in-out;
     transform: scale(105%);
@@ -69,12 +70,14 @@
 .pb-0 {
     padding-bottom: 0 !important;
 }
+/*
 .card-header {
     padding: 1rem 1.25rem;
     margin-bottom: 0;
     background-color: #fff;
     border-bottom: 0 solid transparent;
 }
+*/
 /*
 .alert {
     position: absolute;
